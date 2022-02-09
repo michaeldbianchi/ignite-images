@@ -2,4 +2,5 @@
 
 set -e
 
-
+docker network create web
+ignite run --config sample-ignite.yaml
