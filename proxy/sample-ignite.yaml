@@ -4,7 +4,7 @@ metadata:
   name: proxy
 spec:
   image:
-    oci: michaeldbianchi/ignite-proxy
+    oci: michaeldbianchi/ignite-proxy:main
   cpus: 1
   diskSize: 3GB
   memory: 800MB
@@ -21,3 +21,4 @@ spec:
   copyFiles:
   - hostPath: /data/proxy/.env
     vmPath: /app/.env
+  ssh: true
