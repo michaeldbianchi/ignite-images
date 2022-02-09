@@ -21,4 +21,6 @@ spec:
   copyFiles:
   - hostPath: /data/proxy/.env
     vmPath: /app/.env
+  - hostPath: /data/proxy/usersfile
+    vmPath: /app/usersfile
   ssh: true
