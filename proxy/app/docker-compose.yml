@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  traefik:
+    image: traefik:${TRAEFIK_TAG}
+    restart: always
+    ports:
+    - '80:80'
+    - '443:443'
+    command:
+    - "--api=true"
+    volumes:
+    - ./etc/traefik:/etc/traefik
+    - ./usersfile:/etc/usersfile
+    - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+    - "traefik.enable=true"
+    - "traefik.http.routers.traefik.rule=Host(`${TRAEFIK_SUBDOMAIN}${BASE_DOMAIN}`)"
+    - "traefik.http.routers.traefik.entrypoints=websecure"
+    - "traefik.http.routers.traefik.tls.certresolver=lets-encrypt"
+    - "traefik.http.routers.traefik.middlewares=dash-auth"
+    - "traefik.http.middlewares.dash-auth.basicauth.usersfile=/etc/usersfile"
+    - "traefik.http.services.api@internal.loadbalancer.server.port=8080"
+    networks:
+    - web
+
+networks:
+  web:
+    external: true

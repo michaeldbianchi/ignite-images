@@ -1,0 +1,23 @@
+apiVersion: ignite.weave.works/v1alpha4
+kind: VM
+metadata:
+  name: proxy
+spec:
+  image:
+    oci: michaeldbianchi/ignite-proxy
+  cpus: 1
+  diskSize: 3GB
+  memory: 800MB
+  network:
+    ports:
+    - hostPort: 443
+      vmPort: 443
+      bindAddress: 0.0.0.0
+      protocol: tcp
+    - hostPort: 80
+      vmPort: 80
+      bindAddress: 0.0.0.0
+      protocol: tcp
+  copyFiles:
+  - hostPath: ./app/.env
+    vmPath: /app/.env
