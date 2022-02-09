@@ -3,4 +3,4 @@
 set -e
 
 docker network create web 2> /dev/null || true
-ignite run --config sample-ignite.yaml
+sudo ignite run --config sample-ignite.yaml
