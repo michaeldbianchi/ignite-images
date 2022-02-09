@@ -4,10 +4,12 @@ on:
   push:
     branches:
       - main
+  schedule:
+    - '0 13 * * 1'
+
     # tags:
     #   - v*
-  schedule:
-    - 0 13 * * 1
+
 
 jobs:
   deploy-image:
