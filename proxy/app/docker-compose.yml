@@ -21,8 +21,3 @@ services:
     - "traefik.http.routers.traefik.middlewares=dash-auth"
     - "traefik.http.middlewares.dash-auth.basicauth.usersfile=/etc/usersfile"
     - "traefik.http.services.api@internal.loadbalancer.server.port=8080"
-    networks:
-    - web
-
-networks:
-  web:
