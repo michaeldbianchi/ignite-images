@@ -1,0 +1,36 @@
+apiVersion: ignite.weave.works/v1alpha4
+kind: VM
+metadata:
+  name: oxensn
+spec:
+  image:
+    oci: michaeldbianchi/ignite-oxensn:main
+  cpus: 1
+  diskSize: 50GB
+  memory: 3GB
+  network:
+    ports:
+    - hostPort: 22020
+      vmPort: 22020
+      bindAddress: 0.0.0.0
+      protocol: tcp
+    - hostPort: 22021
+      vmPort: 22021
+      bindAddress: 0.0.0.0
+      protocol: tcp
+    - hostPort: 22022
+      vmPort: 22022
+      bindAddress: 0.0.0.0
+      protocol: tcp
+    - hostPort: 22025
+      vmPort: 22025
+      bindAddress: 0.0.0.0
+      protocol: tcp
+    - hostPort: 1090
+      vmPort: 1090
+      bindAddress: 0.0.0.0
+      protocol: udp
+  copyFiles:
+  - hostPath: /data/oxensn/oxen.conf
+    vmPath: /etc/oxen/oxen.conf
+  ssh: true
