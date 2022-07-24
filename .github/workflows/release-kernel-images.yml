@@ -1,0 +1,36 @@
+name: Release kernel images
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: base/kernel
+
+env:
+  DOCKER_USER: ${{ github.event.inputs.user }}
+
+jobs:
+  kernel:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version: [ 4.14.289, 4.19.253, 5.4.207, 5.10.132, 5.15.57, 5.18.14 ]
+    env:
+      KERNEL_VERSIONS: ${{ matrix.version }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login to container registry
+        uses: docker/login-action@v1.14.1
+        with:
+          registry: docker.io
+          username: ${{ env.DOCKER_USER }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - run: make
+        env:
+          GOARCH: amd64
+      - run: make
+        env:
+          GOARCH: arm64
+      - run: make push

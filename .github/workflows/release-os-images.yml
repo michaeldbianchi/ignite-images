@@ -1,0 +1,47 @@
+name: Release OS images
+
+on:
+  workflow_dispatch:
+    # Enable manual trigger of this action.
+    inputs:
+      user:
+        description: Container registry user.
+        default: michaeldbianchi
+        required: true
+      version:
+        description: ignite version used for image tags.
+        default:
+        required: true
+
+env:
+  DOCKER_USER: ${{ github.event.inputs.user }}
+  VERSION: ${{ github.event.inputs.version }}
+
+defaults:
+  run:
+    working-directory: base
+
+jobs:
+  image-build-push:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        what: [alpine, amazon-kernel, amazonlinux, ubuntu]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      - name: Login to container registry
+        uses: docker/login-action@v1.14.1
+        with:
+          registry: docker.io
+          username: ${{ env.DOCKER_USER }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - run: make OP=build build-${{ matrix.what }}
+        env:
+          VERSION: ${{ steps.date.outputs.date }}
+      - run: make OP=push build-${{ matrix.what }}
+        env:
+          VERSION: ${{ steps.date.outputs.date }}
