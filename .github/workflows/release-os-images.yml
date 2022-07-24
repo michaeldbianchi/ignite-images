@@ -8,10 +8,6 @@ on:
         description: Container registry user.
         default: michaeldbianchi
         required: true
-      version:
-        description: ignite version used for image tags.
-        default:
-        required: true
 
 env:
   DOCKER_USER: ${{ github.event.inputs.user }}
