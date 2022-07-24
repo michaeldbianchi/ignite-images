@@ -2,6 +2,12 @@ name: Release kernel images
 
 on:
   workflow_dispatch:
+    # Enable manual trigger of this action.
+    inputs:
+      user:
+        description: Container registry user.
+        default: michaeldbianchi
+        required: true
 
 defaults:
   run:
